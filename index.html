@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>참가 신청</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2EC; --surface:#FFFFFF; --ink:#1C2B24; --muted:#5E6D65;
+  --line:#CBD5CE; --accent:#2E6B4F; --accent-ink:#FFFFFF; --stub:#F7E9B8; --danger:#A33A2B;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121A16; --surface:#1B2620; --ink:#E6EDE8; --muted:#9AAAA1;
+    --line:#2F3D35; --accent:#6FC29A; --accent-ink:#0E1712; --stub:#3A3420; --danger:#E3826F;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121A16; --surface:#1B2620; --ink:#E6EDE8; --muted:#9AAAA1;
+  --line:#2F3D35; --accent:#6FC29A; --accent-ink:#0E1712; --stub:#3A3420; --danger:#E3826F;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  font-size:16px;line-height:1.6}
+main{max-width:560px;margin:0 auto;padding:40px 20px 64px}
+h1{font-size:2rem;line-height:1.25;margin:0 0 8px;font-weight:700;letter-spacing:-0.02em}
+.lead{color:var(--muted);margin:0 0 32px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+label{display:block;font-weight:500;margin:0 0 6px}
+.req{color:var(--danger);margin-left:2px}
+.field{margin-bottom:18px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+textarea{min-height:88px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.check input{width:auto;margin-top:5px}
+.count{text-align:right;color:var(--muted);font-size:.85rem;margin-top:4px}
+.err{color:var(--danger);font-size:.9rem;margin-top:6px;min-height:0}
+button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:13px 18px;cursor:pointer}
+.primary{background:var(--accent);color:var(--accent-ink);width:100%}
+.primary:disabled{opacity:.5;cursor:default}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.danger{background:transparent;color:var(--danger);border:1px solid var(--line)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.row button{flex:1}
+.notice{padding:14px 16px;border-radius:10px;background:var(--surface);border:1px dashed var(--line);color:var(--muted)}
+/* 접수증 */
+.ticket{display:grid;grid-template-columns:1fr auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ticket .body{padding:22px 24px}
+.ticket .stub{background:var(--stub);padding:22px 18px;border-left:2px dashed var(--line);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:110px}
+.stub small{color:var(--muted);font-size:.8rem}
+.stub strong{font-size:1.6rem;letter-spacing:.04em}
+.ticket h2{margin:0 0 12px;font-size:1.25rem}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.95rem}
+dt{color:var(--muted)} dd{margin:0;word-break:break-all}
+@media (prefers-reduced-motion:no-preference){
+  .ticket.new{animation:print .5s ease-out}
+  @keyframes print{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+}
+/* 관리자 */
+.admin{margin-top:48px}
+.admin h2{font-size:1.25rem;margin:0 0 4px}
+.admin p{margin:0 0 16px;color:var(--muted)}
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+td button{padding:6px 10px;font-weight:500;font-size:.85rem}
+@media (max-width:480px){
+  .ticket{grid-template-columns:1fr}
+  .ticket .stub{border-left:0;border-top:2px dashed var(--line);flex-direction:row;gap:10px}
+}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:24px;width:min(360px,calc(100% - 40px))}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog p{margin:0 0 20px;font-size:1.02rem}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <h1>참가 신청</h1>
+  <p class="lead">아래 내용을 입력하고 신청하세요.</p>
+
+  <form id="form" class="card" novalidate>
+    <div class="field">
+      <label for="name">이름<span class="req">*</span></label>
+      <input id="name" autocomplete="name" placeholder="한글 또는 영어, 10자 이내" required>
+    </div>
+    <div class="field">
+      <label for="phone">연락처<span class="req">*</span></label>
+      <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13" required>
+    </div>
+    <div class="field">
+      <label for="email">이메일<span class="req">*</span></label>
+      <input id="email" type="email" autocomplete="email" maxlength="80" required>
+    </div>
+    <div class="field">
+      <label for="slot">희망 일정<span class="req">*</span></label>
+      <select id="slot" required>
+        <option value="">선택하세요</option>
+        <option>1회차 · 평일 오전</option>
+        <option>2회차 · 평일 저녁</option>
+        <option>3회차 · 주말 오후</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="memo">남기실 말</label>
+      <textarea id="memo" placeholder="문의하실 내용이 있으면 100자 이내로 적어 주세요."></textarea>
+      <div class="count" id="memoCount">0 / 100</div>
+    </div>
+    <div class="field">
+      <label class="check"><input id="agree" type="checkbox"> 신청 확인 연락을 위해 개인정보를 수집하는 데 동의합니다.<span class="req">*</span></label>
+    </div>
+    <button id="submit" class="primary" type="submit">신청하기</button>
+    <div class="row" id="editRow" hidden><button type="button" class="ghost" id="cancelEdit">수정 취소</button></div>
+  </form>
+
+  <section id="done" hidden aria-live="polite">
+    <div class="ticket" id="ticket">
+      <div class="body">
+        <h2>신청이 접수되었습니다</h2>
+        <dl id="summary"></dl>
+      </div>
+      <div class="stub"><small>접수 번호</small><strong id="code"></strong></div>
+    </div>
+    <div class="row">
+      <button class="ghost" id="edit">내용 수정</button>
+      <button class="danger" id="withdraw">신청 취소</button>
+    </div>
+  </section>
+
+  <dialog id="popup" aria-labelledby="popupMsg">
+    <p id="popupMsg"></p>
+    <form method="dialog"><button class="primary" id="popupOk">확인</button></form>
+  </dialog>
+  <dialog id="ask" aria-labelledby="askMsg">
+    <p id="askMsg"></p>
+    <form method="dialog" class="row" style="margin-top:0">
+      <button class="ghost" value="no">아니요</button>
+      <button class="danger" value="yes">예</button>
+    </form>
+  </dialog>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const show = (el, on) => { el.hidden = !on; };
+  let mine = null, justSubmitted = false;
+  const code = Math.random().toString(36).slice(2, 8).toUpperCase();
+
+  const MSG = {
+    nameEmpty: "이름을 입력하세요.",
+    nameMax: "최대 10자입니다.",
+    phone: "연락처를 000-0000-0000 형식으로 입력하세요. 예: 010-1234-5678",
+    email: "올바르지 않은 이메일 형식입니다.",
+    slot: "희망 일정을 선택하세요.",
+    memoMax: "최대 100자입니다.",
+    agree: "개인정보 수집에 동의해야 신청할 수 있습니다.",
+  };
+
+  // 안내 팝업
+  let focusAfter = null;
+  function popup(msg, focusEl) {
+    focusAfter = focusEl || null;
+    $("popupMsg").textContent = msg;
+    const d = $("popup");
+    if (!d.open) d.showModal();
+  }
+  // 예/아니요 확인 팝업
+  function ask(msg) {
+    const d = $("ask");
+    $("askMsg").textContent = msg;
+    d.returnValue = "";
+    return new Promise(resolve => {
+      d.addEventListener("close", () => resolve(d.returnValue === "yes"), { once: true });
+      d.showModal();
+    });
+  }
+  $("popup").addEventListener("close", () => { if (focusAfter) focusAfter.focus(); focusAfter = null; });
+
+  const fmt = iso => new Date(iso).toLocaleString("ko-KR", { dateStyle: "short", timeStyle: "short" });
+
+  // 이름: 영어·한글만, 숫자·공백·기호 불가, 최대 10자
+  const nameEl = $("name");
+  function cleanName() {
+    const v = nameEl.value.replace(/[^a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
+    nameEl.value = [...v].slice(0, 10).join("");
+    if ([...v].length > 10) popup(MSG.nameMax, nameEl);
+  }
+  nameEl.addEventListener("input", e => { if (!e.isComposing) cleanName(); });
+  nameEl.addEventListener("compositionend", cleanName);
+
+  // 연락처: 숫자만, 공백 불가, 자동 하이픈
+  $("phone").addEventListener("input", e => {
+    const d = e.target.value.replace(/\D/g, "").slice(0, 11);
+    e.target.value = d.length > 7 ? `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}` : d.length > 3 ? `${d.slice(0,3)}-${d.slice(3)}` : d;
+  });
+
+  // 이메일: 공백 불가
+  $("email").addEventListener("input", e => { if (!e.isComposing && /\s/.test(e.target.value)) e.target.value = e.target.value.replace(/\s/g, ""); });
+
+  // 남기실 말: 최대 100자
+  const memoEl = $("memo");
+  const updateCount = () => { $("memoCount").textContent = `${[...memoEl.value].length} / 100`; };
+  function cleanMemo() {
+    const chars = [...memoEl.value];
+    if (chars.length > 100) { memoEl.value = chars.slice(0, 100).join(""); popup(MSG.memoMax, memoEl); }
+    updateCount();
+  }
+  memoEl.addEventListener("input", e => { if (e.isComposing) updateCount(); else cleanMemo(); });
+  memoEl.addEventListener("compositionend", cleanMemo);
+
+  function render() {
+    if (mine) {
+      show($("form"), false); show($("done"), true);
+      const dl = $("summary"); dl.textContent = "";
+      [["이름", mine.name], ["연락처", mine.phone], ["이메일", mine.email], ["희망 일정", mine.slot], ["신청 시각", fmt(mine.updatedAt)]]
+        .forEach(([k, v]) => { const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); });
+      $("code").textContent = code;
+      $("ticket").classList.toggle("new", justSubmitted); justSubmitted = false;
+    } else {
+      show($("done"), false); show($("form"), true); show($("editRow"), false);
+      $("submit").textContent = "신청하기";
+    }
+  }
+
+  function fillForm(d) {
+    nameEl.value = d?.name || ""; $("phone").value = d?.phone || ""; $("email").value = d?.email || "";
+    $("slot").value = d?.slot || ""; memoEl.value = d?.memo || ""; $("agree").checked = !!d;
+    updateCount();
+  }
+
+  // 형식 검사: 첫 번째 오류만 팝업으로 알림
+  function validate() {
+    const name = nameEl.value, phone = $("phone").value, email = $("email").value;
+    if (!name) return [MSG.nameEmpty, nameEl];
+    if (!/^[a-zA-Z가-힣]{1,10}$/.test(name)) return ["이름은 한글 또는 영어로 입력하세요.", nameEl];
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) return [MSG.phone, $("phone")];
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return [MSG.email, $("email")];
+    if (!["1회차 · 평일 오전", "2회차 · 평일 저녁", "3회차 · 주말 오후"].includes($("slot").value)) return [MSG.slot, $("slot")];
+    if ([...memoEl.value].length > 100) return [MSG.memoMax, memoEl];
+    if (!$("agree").checked) return [MSG.agree, $("agree")];
+    return null;
+  }
+
+  $("form").addEventListener("submit", e => {
+    e.preventDefault();
+    const bad = validate(); if (bad) return popup(...bad);
+    mine = { name: nameEl.value, phone: $("phone").value, email: $("email").value, slot: $("slot").value,
+      memo: memoEl.value.trim(), updatedAt: new Date().toISOString() };
+    justSubmitted = true; render(); window.scrollTo(0, 0);
+  });
+
+  $("edit").addEventListener("click", () => {
+    fillForm(mine); show($("done"), false); show($("form"), true); show($("editRow"), true);
+    $("submit").textContent = "수정 내용 저장"; nameEl.focus();
+  });
+  $("cancelEdit").addEventListener("click", render);
+  $("withdraw").addEventListener("click", async () => {
+    if (!(await ask("신청을 취소할까요? 입력한 내용이 삭제됩니다."))) return;
+    mine = null; fillForm(null); render();
+  });
+})();
+</script>
+
+
+</body>
+</html>
